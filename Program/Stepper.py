@@ -29,11 +29,15 @@ class Stepper:
         
         
         
-    def reach_position_step(self,step_numb,rpm = None, duty_ratio=0.2) :
+    def move_steps(self,step_numb,rpm = None, duty_ratio=0.1) :
         """move a certain number of steps (driver microsteps, not motor steps).
         step_numb : number of steps to move. sign gives direction.
         rpm : speed to use. defaults at max speed *0.4
         duty_ratio : ratio of step signal"""
+        
+        if step_numb==0 :
+                return
+                
         if self.dir_pin :
             self.dir_pin.on() if step_numb >0 else  self.dir_pin.off()
             
@@ -45,28 +49,37 @@ class Stepper:
                             n=abs(step_numb),
                             background=True)
                             
-        self.dir_pin.off()
-        self.step_pin.off()
 
-    def spin(self,rpm=100, duty_ratio=0.2) :
+    def move_degs(self, degs, rpm=None, duty_ratio=0.1) :
+        """rotate a certain angle in degrees."""
+        
+        steps = round (degs/360.0 * self.config.step_per_rev)
+        self.move_steps(steps,rpm,duty_ratio)
+        
+
+    def spin(self,rpm, duty_ratio=0.1) :
         """start rotating at given speed.
         args :
         rpm : speed in rounds per minute. sign gives direction.
         step_ratio : the cyclic ratio of the pulses sent."""
+        
+        if rpm==0 :
+                return
         if self.dir_pin :
             self.dir_pin.on() if rpm >0 else self.dir_pin.off()
         
         actual_rpm = min(abs(rpm),Stepper.capped_rpm)
         
         t_pulse = 1/((actual_rpm/60)*self.config.step_per_rev)
-        print(t_pulse)
         self.step_pin.blink(t_pulse*duty_ratio,
                             t_pulse*(1-duty_ratio))
 
     def stop(self):
         """stop motor by setting PUL and DIR to OFF."""
-        self.step_pin.off()
-        self.dir_pin.off()
+        self.step_pin._stop_blink()
+        if self.dir_pin is not None:
+            self.dir_pin._stop_blink()
         
     def __del__(self):
             self.stop()
+            
