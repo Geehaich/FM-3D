@@ -1,5 +1,4 @@
-import os
-from Gcode_cmds import GcodeCommands
+from Gcode.Gcode_cmds import GcodeCommands
 
 def check_file(filename):
     """count non-comment lines in a gcode file and check if every code present has been implemented"""

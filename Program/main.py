@@ -1,6 +1,4 @@
-from Stepper import Stepper
+from Gcode.Gcode_parser import GcodeReader
 
-Conf1 = StepperConfig("Motor1",3,800,5)
-motor1 = Stepper(Conf1)
 
-motor1.
+reader = GcodeReader(R"C:\Users\OTTL\OneDrive\Bureau\FM-3D\FM-3D\Program\tests\rm.gcode")
