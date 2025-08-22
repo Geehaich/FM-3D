@@ -78,7 +78,7 @@ class Stepper:
             self.dir_pin.off()
         else:
             self.dir_pin.on()
-        pulse_duration = 1/(self.config.step_per_rev * (rpm/60))
+        pulse_duration = 1/(self.config.step_per_rev * (abs(rpm)/60))
         self.step_pin.blink(pulse_duration*duty_ratio,pulse_duration*(1-duty_ratio))
 
 

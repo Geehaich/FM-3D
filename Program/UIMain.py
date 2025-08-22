@@ -19,14 +19,14 @@ class TestUI(QWidget):
         self.but_Eminus = QPushButton("E-")
 
         if self.con_ref !=None:
-            self.but_Xplus.pressed += lambda : self.con_ref.x_motor.move_rpm(40)
-            self.but_Xplus.released += lambda : self.con_ref.x_motor.stop()
-            self.but_Xminus.pressed += lambda : self.con_ref.x_motor.move_rpm(-40)
-            self.but_Xminus.released += lambda : self.con_ref.x_motor.stop()
-            self.but_Eplus.pressed += lambda: self.con_ref.print_head.e_motor.move_rpm(-40)
-            self.but_Eplus.released += lambda: self.con_ref.print_head.e_motor.stop()
-            self.but_Eminus.pressed += lambda: self.con_ref.print_head.e_motor.move_rpm(-40)
-            self.but_Eminus.released += lambda: self.con_ref.print_head.e_motor.stop()
+            self.but_Xplus.pressed.connect(lambda : self.con_ref.x_motor.move_rpm(60))
+            self.but_Xplus.released.connect(lambda : self.con_ref.x_motor.stop())
+            self.but_Xminus.pressed.connect(lambda : self.con_ref.x_motor.move_rpm(-60))
+            self.but_Xminus.released.connect(lambda : self.con_ref.x_motor.stop())
+            self.but_Eplus.pressed.connect(lambda: self.con_ref.print_head.e_motor.move_rpm(-40))
+            self.but_Eplus.released.connect(lambda: self.con_ref.print_head.e_motor.stop())
+            self.but_Eminus.pressed.connect(lambda: self.con_ref.print_head.e_motor.move_rpm(-40))
+            self.but_Eminus.released.connect(lambda: self.con_ref.print_head.e_motor.stop())
 
 
         radio_lay = QHBoxLayout()
@@ -64,12 +64,10 @@ class TestUI(QWidget):
 
 
 
-conf_X = StepperConfig("X",2,3,800,10)
-conf_Y = StepperConfig("N",0,0,0,0)
-conf_Z1 = StepperConfig("N",0,0,0,0)
-conf_Z2 = StepperConfig("N",0,0,0,0)
-conf_E = StepperConfig("E",8,10,800,4)
-prin_conf = PrintController(conf_X,conf_Y,conf_Z1,conf_Z2,conf_E)
+conf_X = StepperConfig("X",3,4,800,10)
+conf_E = StepperConfig("E",14,15,800,4)
+print(conf_E)
+prin_conf = PrintController(conf_X,None,None,None,conf_E,21)
 
 # You need one (and only one) QApplication instance per application.
 # Pass in sys.argv to allow command line arguments for your app.
@@ -77,7 +75,7 @@ prin_conf = PrintController(conf_X,conf_Y,conf_Z1,conf_Z2,conf_E)
 app = QApplication(sys.argv)
 
 # Create a Qt widget, which will be our window.
-Testwid = TestUI(None)
+Testwid = TestUI(prin_conf)
 Testwid.show()  # IMPORTANT!!!!! Windows are hidden by default.
 
 # Start the event loop.

@@ -4,12 +4,7 @@ import numpy as np
 
 from Print_head import PrintHead
 
-Conf_X = StepperConfig("X",3,5,800,2.5)
-Conf_Y = StepperConfig("Y",8,10,800,2.5)
-Conf_Z1 = StepperConfig("Z1",13,15,800,2.5)
-Conf_Z2 = StepperConfig("Z2",16,18,800,2.5)
 
-Coordinates = np.zeros(4)
 
 
 class PrintController :
@@ -43,14 +38,15 @@ class PrintController :
                  conf_y,
                  conf_z1,
                  conf_z2,
-                 conf_e):
+                 conf_e,
+                 laser_pin):
 
         self.coords = np.zeros(4,dtype=float)
-        self.x_motor = Stepper(Conf_X)
-        self.y_motor = Stepper(Conf_Y)
-        self.z1_motor = Stepper(Conf_Z1)
-        self.z2_motor = Stepper(Conf_Z2)
-        self.print_head = PrintHead(conf_e)
+        self.x_motor = Stepper(conf_x)
+        self.y_motor = Stepper(conf_y) if conf_y else None
+        self.z1_motor = Stepper(conf_z1) if conf_z1 and conf_z2 else None
+        self.z2_motor = Stepper(conf_z2) if conf_z2 and conf_z1 else None
+        self.print_head = PrintHead(conf_e,laser_pin)
 
         self.absolute_axis = True
         self.absolute_extruder = True
