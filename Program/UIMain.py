@@ -23,7 +23,7 @@ class TestUI(QWidget):
             self.but_Xplus.released.connect(lambda : self.con_ref.x_motor.stop())
             self.but_Xminus.pressed.connect(lambda : self.con_ref.x_motor.move_rpm(-60))
             self.but_Xminus.released.connect(lambda : self.con_ref.x_motor.stop())
-            self.but_Eplus.pressed.connect(lambda: self.con_ref.print_head.e_motor.move_rpm(-40))
+            self.but_Eplus.pressed.connect(lambda: self.con_ref.print_head.e_motor.move_rpm(40))
             self.but_Eplus.released.connect(lambda: self.con_ref.print_head.e_motor.stop())
             self.but_Eminus.pressed.connect(lambda: self.con_ref.print_head.e_motor.move_rpm(-40))
             self.but_Eminus.released.connect(lambda: self.con_ref.print_head.e_motor.stop())
@@ -40,6 +40,7 @@ class TestUI(QWidget):
         radio_lay.addWidget(self.rad_las_off)
         radio_lay.addWidget(self.rad_las_oneperc)
         radio_lay.addWidget(self.rad_las_on)
+        self.rad_las_off.click()
 
 
         self.lay.addWidget(QLabel("X axis"),0,0)
@@ -65,7 +66,7 @@ class TestUI(QWidget):
 
 
 conf_X = StepperConfig("X",3,4,800,10)
-conf_E = StepperConfig("E",14,15,800,4)
+conf_E = StepperConfig("E",17,27,800,4)
 print(conf_E)
 prin_conf = PrintController(conf_X,None,None,None,conf_E,21)
 
